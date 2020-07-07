@@ -45,6 +45,66 @@ app.get("/CustomerRegistration", (req, res) => {
 
 });
 
+
+app.post("/CustomerRegistration", (req, res) => {
+    let ferror = "";
+    let lerror = "";
+    let uerror = "";
+    let perror = ""; 
+    let check = true;
+    let formD = {
+        fnameholder: req.body.fname,
+        lnameholder: req.body.lname,
+        nameholder: req.body.uname,
+        pswholder: req.body.psw
+    };
+    if(req.body.fname == ""){
+        ferror = "This field is required";
+        check = false;
+    }
+    else {
+        var letters = /^[A-Za-z]+$/;
+        if(!req.body.fname.match(letters)){
+            ferror = "This field should only include letters";
+            check = false;
+        }
+    }
+    if(req.body.lname == ""){
+        lerror = "This field is required";
+        check = false;
+    }
+    if(req.body.uname == ""){
+        uerror = "This field is required";
+        check = false;
+    }
+    if(req.body.psw == ""){
+        perror = "This field is required";
+        check = false;
+    }
+    else {
+        var lnumlength = /^[a-z0-9]{6,12}$/i;
+        if(!req.body.psw.match(lnumlength)){
+            perror = "This field should only include letters or numbers and be from 6 to 12 characters long";
+            check = false;
+        }
+    }
+    if(!check) {
+        res.render("customer", {
+            title: "Customer Registration Page",
+            fnameError: ferror,
+            lnameError: lerror,
+            usernameError: uerror,
+            passwordError: perror,
+            formD: formD
+        });
+    }
+    else {
+        res.redirect("/Dashboard");
+    }
+
+});
+
+
 app.get("/Login", (req, res) => {
 
     res.render("login", {
