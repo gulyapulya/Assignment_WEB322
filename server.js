@@ -49,12 +49,14 @@ app.get("/CustomerRegistration", (req, res) => {
 app.post("/CustomerRegistration", (req, res) => {
     let ferror = "";
     let lerror = "";
+    let eerror = "";
     let uerror = "";
     let perror = ""; 
     let check = true;
     let formD = {
         fnameholder: req.body.fname,
         lnameholder: req.body.lname,
+        emailholder: req.body.email,
         nameholder: req.body.uname,
         pswholder: req.body.psw
     };
@@ -71,6 +73,10 @@ app.post("/CustomerRegistration", (req, res) => {
     }
     if(req.body.lname == ""){
         lerror = "This field is required";
+        check = false;
+    }
+    if(req.body.email == ""){
+        eerror = "This field is required";
         check = false;
     }
     if(req.body.uname == ""){
@@ -95,10 +101,21 @@ app.post("/CustomerRegistration", (req, res) => {
             lnameError: lerror,
             usernameError: uerror,
             passwordError: perror,
+            emailError: eerror,
             formD: formD
         });
     }
     else {
+        const sgMail = require('@sendgrid/mail');
+        sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+        const msg = {
+            to: `${req.body.email}`,
+            from: 'gulnurb2703@gmail.com',
+            subject: 'Welcome!',
+            text: 'We are happy to see you!',
+            html: '<strong>We are happy to see you!</strong>',
+        };
+        sgMail.send(msg);
         res.redirect("/Dashboard");
     }
 

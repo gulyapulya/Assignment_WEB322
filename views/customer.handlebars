@@ -10,6 +10,11 @@
 
         <div class="errors">{{lnameError}}</div>
 
+        <label for="email"><b>Email</b></label>
+        <input type="email" placeholder="Enter Email" name="email" value="{{formD.emailholder}}">
+
+        <div class="errors">{{emailError}}</div>
+
         <label for="uname"><b>Username</b></label>
         <input type="text" placeholder="Enter Username" name="uname" value="{{formD.nameholder}}">
 
@@ -21,6 +26,6 @@
         <div class="errors">{{passwordError}}</div>
 
         <button type="submit">Sign Up</button>
-        
+
     </div>
 </form>
