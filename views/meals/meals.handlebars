@@ -1,0 +1,18 @@
+<div class="content">
+    <h2>Our meal packages</h2>
+    <h3>You could be chowing down on any of these meals any time you choose - seriously!<br>
+        Order some (or all) of these meals and see why thousands of Canadians stock us in their fridge!</h3>
+
+    <div class="grid-container_meals">
+        {{#each data}}
+        <div class="meals">
+            <img src="{{this.img}}"> <br><br>
+            <span id="title"><b>Title :</b> {{this.title}}<br></span>
+            <span id="category"><b>Category :</b> {{this.category}}<br></span>
+            <span id="description"><b>{{this.description}}</b><br></span>
+            <span id="nmeals"><b>Number of meals inside:</b> {{this.nmeals}}<br></span>
+            <span id="price"><b>Price : {{this.price}}</b><br></span>
+        </div>
+        {{/each}}
+    </div>
+</div>

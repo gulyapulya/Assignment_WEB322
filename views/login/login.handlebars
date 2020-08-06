@@ -1,0 +1,12 @@
+<form class="modal-content" action="/Login" method="POST">
+        <label for="uname"><b>Username</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" value="{{formD.nameholder}}">
+
+        <div class="errors">{{usernameError}}</div>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" value="{{formD.pswholder}}">
+
+        <div class="errors">{{passwordError}}</div>
+        <button type="submit">Login</button>
+</form>

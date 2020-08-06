@@ -6,7 +6,6 @@
 /* imgs */
 img {
     width: 100%;
-    height: auto;
 }
 
 /* typography */
@@ -80,12 +79,12 @@ html { font-size:100%; }
 .grid-container_meals {
     display: inline-grid;
     grid-gap: 10px;
-    grid-template-columns: auto auto auto auto;
+    grid-template-columns: repeat(4, 1fr);
     justify-content: space-evenly;
 }
 
 .meals {
-    padding: 7px;
+    padding: 10px;
 }
 
 .logo {
