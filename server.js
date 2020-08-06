@@ -1,8 +1,11 @@
 const express = require("express");
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
+const db = require("./models/db.js");
 
 require('dotenv').config({path:"./config/keys.env"});
+
+const PORT  = process.env.PORT ||  3000;
 
 const app = express();
 
@@ -22,7 +25,14 @@ app.use("/", mealsController);
 app.use("/Registration", registrationController);
 app.use("/Login", loginController);
 
-const PORT  = process.env.PORT ||  3000;
-app.listen(PORT, ()=>{
-    console.log("Web Site is up and running");
+db.initialize()
+.then(()=>{
+    console.log("Data read successfully");
+    app.listen(PORT, ()=>{
+        console.log("Web Site is up and running");
+    })
 })
+.catch((data)=>{
+  console.log(data);
+});
+

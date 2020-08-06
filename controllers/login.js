@@ -10,23 +10,23 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-    let uerror = "";
+    let eerror = "";
     let perror = ""; 
     let formD = {
-        nameholder: req.body.uname,
+        emailholder: req.body.email,
         pswholder: req.body.psw
     };
-    if(req.body.uname == ""){
+    if(req.body.email == ""){
         uerror = "This field is required";
     }
     if(req.body.psw == ""){
         perror = "This field is required";
     }
-    if(req.body.uname == "" || req.body.psw == "") {
+    if(req.body.email == "" || req.body.psw == "") {
         console.log(formD);
         res.render("login/login", {
             title: "Login Page",
-            usernameError: uerror,
+            emailError: eerror,
             passwordError: perror,
             formD: formD
         });
@@ -34,7 +34,6 @@ router.post("/", (req, res) => {
     else {
         res.redirect("/Dashboard");
     }
-
 });
 
 module.exports = router;
