@@ -166,9 +166,9 @@ input{
 }
 
 input[type=checkbox]{
-    width: 10px;
-    padding: 0 0 0 0px;
-    margin: 0 0 0 10px;
+    width: 7px;
+    border: 0px;
+    margin: 16px;
 }
 
 button {

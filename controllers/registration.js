@@ -3,11 +3,9 @@ const router = express.Router();
 const db = require("../models/db.js");
 
 router.get("/", (req, res) => {
-
     res.render("registration/registration", {
         title: "Customer Registration Page"
     });
-
 });
 
 router.post("/", (req, res) => {
@@ -18,7 +16,7 @@ router.post("/", (req, res) => {
         pswholder: req.body.psw
     };
     db.validateUserRegistration(req.body).then((data)=>{
-        db.addUser(data).then(()=>{
+        db.addUser(data).then((user)=>{
             const sgMail = require('@sendgrid/mail');
             sgMail.setApiKey(process.env.SENDGRID_API_KEY);
             const msg = {
@@ -29,7 +27,12 @@ router.post("/", (req, res) => {
                 html: '<strong>We are happy to see you!</strong>',
             };
             sgMail.send(msg);
-            res.redirect("/Dashboard");
+            
+            req.session.user = user;
+            if (user.clerk)
+                res.redirect("/Dashboard/Clerk");
+            else
+                res.redirect("/Dashboard/Customer");
         }).catch((err)=>{
             console.log("Error registering user: " + err);
         });

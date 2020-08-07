@@ -1,39 +1,37 @@
 const express = require('express')
 const router = express.Router();
+const db = require("../models/db.js");
+
 
 router.get("/", (req, res) => {
-
     res.render("login/login", {
         title: "Login Page"
     });
-
 });
 
-router.post("/", (req, res) => {
-    let eerror = "";
-    let perror = ""; 
+router.post("/", (req, res) => {    
     let formD = {
         emailholder: req.body.email,
         pswholder: req.body.psw
     };
-    if(req.body.email == ""){
-        uerror = "This field is required";
-    }
-    if(req.body.psw == ""){
-        perror = "This field is required";
-    }
-    if(req.body.email == "" || req.body.psw == "") {
-        console.log(formD);
+
+    db.validateUserLogin(req.body)
+    .then((user)=>{
+        req.session.user = user;
+        if (user.clerk)
+            res.redirect("/Dashboard/Clerk");
+        else
+            res.redirect("/Dashboard/Customer");
+    })
+    .catch((data)=>{
         res.render("login/login", {
             title: "Login Page",
-            emailError: eerror,
-            passwordError: perror,
+            emailError: data.errors.email,
+            passwordError: data.errors.psw,
             formD: formD
         });
-    }
-    else {
-        res.redirect("/Dashboard");
-    }
+    });
 });
 
 module.exports = router;
+
