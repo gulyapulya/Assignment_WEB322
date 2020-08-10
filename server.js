@@ -11,9 +11,6 @@ const bodyParser = require('body-parser');
 const db = require("./models/db.js");
 const clientSessions = require("client-sessions");
 
-
-const PORT  = process.env.PORT ||  3000;
-
 const app = express();
 
 app.engine('handlebars', exphbs());
@@ -44,9 +41,7 @@ app.use("/Dashboard", dashboardController);
 db.initialize()     
 .then(()=>{
     console.log("Data read successfully");
-    app.listen(PORT, ()=>{
-        console.log("Web Site is up and running");
-    })
+    app.listen(process.env.PORT || 3000);
 })
 .catch((data)=>{
   console.log(data);
