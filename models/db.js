@@ -29,7 +29,7 @@ module.exports.initialize = function () {
     return new Promise((resolve, reject) => {
         let db = mongoose.createConnection(connectionString, { useNewUrlParser: true, useUnifiedTopology: true });
 
-        db.on('error', (err) => {
+        db.on("error", (err) => {
             reject(err);
         });
 
