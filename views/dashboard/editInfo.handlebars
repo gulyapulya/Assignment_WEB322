@@ -1,0 +1,48 @@
+<form class="modal-content" action="/Dashboard/EditInfo" method="POST" enctype="multipart/form-data">
+    <div class="container">
+        
+        {{#if succUpdated}}
+            <h2>Your package has been successfully updated!</h2>
+        {{/if}}
+
+        <input type="hidden" placeholder="Enter Title" name="title" value="{{formD.titleholder}}">
+
+        <label for="photo"><b>Photo</b></label>
+        <input type="file" name="photo">
+
+        <div class="errors">{{imgError}}</div>
+
+        <label for="cat"><b>Category</b></label>
+        <input type="text" placeholder="Enter Category" name="cat" value="{{formD.catholder}}">
+
+        <div class="errors">{{catError}}</div>
+
+        <label for="price"><b>Price</b></label>
+        <input type="text" placeholder="Enter Price" name="price" value="{{formD.priceholder}}">
+
+        <div class="errors">{{priceError}}</div>
+
+        <label for="nmeals"><b>Number of Meals</b></label>
+        <input type="number" placeholder="Enter Number of Meals" name="nmeals" value="{{formD.nmealsholder}}">
+
+        <div class="errors">{{nmealsError}}</div>
+
+        <label for="desc"><b>Description</b></label>
+        <input type="text" placeholder="Enter Description" name="desc" value="{{formD.descholder}}">
+
+        <div class="errors">{{descError}}</div>
+
+        <label for="top"><b>Is it a top meal?</b></label>
+        <input type="checkbox" name="top" value="true"> <b>yes</b>
+
+        <div class="errors"></div>
+
+        <button type="submit">Edit Meal</button>
+
+    </div>
+
+</form>
+
+<div class="content">
+    <button onclick="location.href='/Dashboard/Clerk'" type="button">Go back to the dashboard</button>
+</div>

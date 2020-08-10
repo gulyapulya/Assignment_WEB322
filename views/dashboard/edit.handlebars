@@ -1,0 +1,16 @@
+<form class="modal-content" action="/Dashboard/Edit" method="POST">
+
+    <div class="container">
+        <label for="title"><b>Title</b></label>
+        <input type="text" placeholder="Enter Title" name="title" value="{{titleholder}}">
+
+        <div class="errors">{{titleError}}</div>
+    </div>
+
+    <button type="submit">Find the package info</button>
+</form>
+
+<div class="content">
+    <button onclick="location.href='/Dashboard/Clerk'" type="button">Go back to the dashboard</button>
+</div>
+

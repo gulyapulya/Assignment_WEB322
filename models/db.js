@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const bcrypt = require('bcrypt');
-const fakeDB = require("./meals.js");
 var connectionString = "mongodb+srv://gulnur:SenecaPass@cpa-web322.4szmw.mongodb.net/Web322?retryWrites=true&w=majority";
 
 let Schema = mongoose.Schema;
@@ -16,10 +15,10 @@ let UserSchema = new Schema({
 let MealsSchema = new Schema({
     img: String,
     title: {type: String, unique: true},
-    category: String,
+    cat: String,
     price: String,
     nmeals: Number,
-    description: String,
+    desc: String,
     top: Boolean
 });
 
@@ -36,21 +35,7 @@ module.exports.initialize = function () {
 
         db.once('open', () => {
             Meals = db.model("meals", MealsSchema);
-            Users = db.model("users", UserSchema);/*
-            fakeDB.getAll().foreach((item) => {
-                console.log(item);
-                var newMeal = new Meals(item);
-                newMeal.save((err) => {
-                    if (err) {
-                        console.log("Ahhh one more error: " + err);
-                        reject(err);
-                    }
-                    else {
-                        console.log("New Meal: " + item.title);
-                        resolve();
-                    }
-                });
-            });*/
+            Users = db.model("users", UserSchema);
             resolve();
         });
     });
@@ -58,12 +43,10 @@ module.exports.initialize = function () {
 
 module.exports.getMeals = function (top) {
     return new Promise((resolve, reject) => {
-
         if (top)
             LookingForMeals = Meals.find({ top: true });
         else
             LookingForMeals = Meals.find();
-
         LookingForMeals
             .exec()
             .then((returnedMeals) => {
@@ -77,6 +60,172 @@ module.exports.getMeals = function (top) {
             });
     });
 };
+
+module.exports.getMealsByTitle = function (neededTitle) {
+    return new Promise((resolve, reject) => {
+        Meals.find({ title: neededTitle })
+            .exec()
+            .then((returnedMeals) => {
+                if (returnedMeals.length != 0)
+                    resolve(returnedMeals.map(item => item.toObject()));
+                else
+                    reject("No meals found");
+            })
+            .catch((err) => {
+                reject(err);
+            });
+    });
+};
+
+module.exports.validateMealAdd = function (data) {
+    return new Promise((resolve, reject) => {
+        data.errors = {};
+        let check = true;
+
+        data.top = (data.top)? true: false;
+
+        if (data.img == "") {
+            data.errors.img = "This field is required";
+            check = false;
+        }
+        
+        if (data.title == "") {
+            data.errors.title = "This field is required";
+            check = false;
+        }
+
+        if (data.cat == "") {
+            data.errors.cat = "This field is required";
+            check = false;
+        }
+
+        if (data.price == "") {
+            data.errors.price = "This field is required";
+            check = false;
+        }
+        else {
+            var numbersonly = /[0-9]+[.]?[0-9]*/;
+            if (!data.price.match(numbersonly)) {
+                data.errors.price = "This field should only include numbers";
+                check = false;
+            }
+        }
+
+        if (data.desc == "") {
+            data.errors.desc = "This field is required";
+            check = false;
+        }
+
+        if (!check) {
+            reject(data);
+        } else {
+            this.getMealsByTitle(data.title)
+                .then((meal) => {
+                    data.errors.title = "This title is already used";
+                    reject(data);
+                })
+                .catch(() => {
+                    resolve(data);
+                });
+        }
+    });
+}
+
+module.exports.addMeal = function (data) {
+    return new Promise((resolve, reject) => {
+        var newMeal= new Meals({
+            img: data.img,
+            title: data.title,
+            cat: data.cat,
+            price: data.price,
+            nmeals: data.nmeals,
+            desc: data.desc,
+            top: data.top
+        });
+
+        newMeal.save((err) => {
+            if (err) {
+                console.log("Ahhh one more error: " + err);
+                reject(err);
+            }
+            else {
+                console.log("New Meal: " + data.title);
+                resolve(newMeal);
+            }
+        });
+    });
+}
+
+
+module.exports.validateMealEdit = function (data) {
+    return new Promise((resolve, reject) => {
+        data.errors = {};
+        let check = true;
+
+        data.top = (data.top)? true: false;
+
+        if (data.img == "") {
+            data.errors.img = "This field is required";
+            check = false;
+        }
+        
+        if (data.title == "") {
+            data.errors.title = "This field is required";
+            check = false;
+        }
+
+        if (data.cat == "") {
+            data.errors.cat = "This field is required";
+            check = false;
+        }
+
+        if (data.price == "") {
+            data.errors.price = "This field is required";
+            check = false;
+        }
+        else {
+            var numbersonly = /[0-9]+[.]?[0-9]*/;
+            if (!data.price.match(numbersonly)) {
+                data.errors.price = "This field should only include numbers";
+                check = false;
+            }
+        }
+
+        if (data.desc == "") {
+            data.errors.desc = "This field is required";
+            check = false;
+        }
+
+        if (!check) {
+            reject(data);
+        } else {
+            resolve(data);
+        }
+    });
+}
+
+module.exports.editMeal = (data)=>{
+    return new Promise((resolve, reject)=>{
+        data.top = (data.top)? true: false;
+        Meals.updateOne(
+            {title : data.title}, 
+            {$set: {  
+                img: data.img,
+                cat: data.cat,
+                price: data.price,
+                nmeals: data.nmeals,
+                desc: data.desc,
+                top: data.top
+            }})
+            .exec() 
+            .then(()=>{
+                console.log(`Meal ${data.title} has been updated`);
+                resolve();
+            }).catch((err)=>{
+                reject(err);
+            });
+    });
+}
 
 
 module.exports.addUser = function (data) {
@@ -111,9 +260,9 @@ module.exports.addUser = function (data) {
     });
 }
 
-module.exports.getUsersByEmail = function (inEmail) {
+module.exports.getUsersByEmail = function (neededEmail) {
     return new Promise((resolve, reject) => {
-        Users.find({ email: inEmail })
+        Users.find({ email: neededEmail })
             .exec()
             .then((returnedUsers) => {
                 if (returnedUsers.length != 0)
@@ -213,6 +362,7 @@ module.exports.validateUserLogin = function(data) {
             });
         })
         .catch((err) => {
+            data.errors.email = "No users with this email found";
             console.log("Getting user by email error: " + err);
             reject(data);
         });

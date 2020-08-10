@@ -1,3 +1,10 @@
+/* 
+github: https://github.com/gulyapulya/Assignment_WEB322
+heroku: https://web322-assignment-gulnur.herokuapp.com
+All the images were found either in google or in the sample website provided in the instructions 
+*/
+
+
 const express = require("express");
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
@@ -20,9 +27,10 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(clientSessions({
     cookieName: "session",
     secret: "web322_assignment_3", 
-    duration: 2 * 60 * 1000, 
-    activeDuration: 1000 * 60 
+    duration: 20 * 60 * 1000, 
+    activeDuration: 10 * 60 * 1000 
   }));  
+
 
 const mealsController = require("./controllers/meals");
 const registrationController = require("./controllers/registration");

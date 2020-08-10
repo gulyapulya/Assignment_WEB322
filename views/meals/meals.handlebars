@@ -6,10 +6,10 @@
     <div class="grid-container_meals">
         {{#each data}}
         <div class="meals">
-            <img src="{{this.img}}"> <br><br>
+            <img src="/img/{{this.img}}"> <br><br>
             <span id="title"><b>Title :</b> {{this.title}}<br></span>
-            <span id="category"><b>Category :</b> {{this.category}}<br></span>
-            <span id="description"><b>{{this.description}}</b><br></span>
+            <span id="category"><b>Category :</b> {{this.cat}}<br></span>
+            <span id="description"><b>{{this.desc}}</b><br></span>
             <span id="nmeals"><b>Number of meals inside:</b> {{this.nmeals}}<br></span>
             <span id="price"><b>Price : {{this.price}}</b><br></span>
         </div>
