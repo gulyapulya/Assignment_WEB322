@@ -4,14 +4,13 @@ heroku: https://web322-assignment-gulnur.herokuapp.com
 All the images were found either in google or in the sample website provided in the instructions 
 */
 
-
+require('dotenv').config({path:"./config/keys.env"});
 const express = require("express");
 const exphbs = require('express-handlebars');
 const bodyParser = require('body-parser');
 const db = require("./models/db.js");
 const clientSessions = require("client-sessions");
 
-require('dotenv').config({path:"./config/keys.env"});
 
 const PORT  = process.env.PORT ||  3000;
 
