@@ -11,7 +11,10 @@ Resources:
 Clerk Credentials:
   email: gulnurb2703@gmail.com
   password: password
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin
 */
 
 require('dotenv').config({path:"./config/keys.env"});

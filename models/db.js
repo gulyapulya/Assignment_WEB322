@@ -281,7 +281,6 @@ module.exports.validateUserRegistration = function (data) {
         data.errors = {};
         let check = true;
 
-        data.clerk = (data.clerk)? true: false;
         
         if (data.fname == "") {
             data.errors.fname = "This field is required";
