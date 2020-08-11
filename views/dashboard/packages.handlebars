@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script>
+        function makeAJAXRequest(method, url, data) {
+            if (data) { 
+                console.log("Adding: " + data.name);
+                fetch(url, {
+                    method: method,
+                    body: JSON.stringify(data),
+                    headers: { 'Content-Type': 'application/json' }
+                })
+                    .then(response => response.json())
+                    .then(json => {
+                        $("span.glyphicon").text(`${json.data}`);
+                    }).catch((err) => {
+                        console.log("Error while fetching");
+                        alert(err.message);
+                    });
+
+            } else {  
+                fetch(url, { method: method })
+                    .then(response => response.json())
+                    .then(json => {
+                        console.log(json);
+                    }).catch((message) => {
+                        console.log("Error while fetching");
+                        alert(message);
+                    });
+            }
+        }
+        function addToCart(data) {
+            console.log("Calling addToCart with: " + data);
+            makeAJAXRequest("POST", "/Dashboard/addProduct", { name: data });
+        }
+
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="logo">
+            <img src="/img/logo.png" alt="Logo">
+            <h1>Meals and Groceries Delivered</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/MealsPackage">Meals Package</a></li>
+                <li><a href="/Registration">Customer Registration</a></li>
+                <li><a href="/Login">Login</a></li>
+                <li class="right"><a href="/Dashboard/Cart">Cart  <span class="glyphicon"></span></a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="hero">
+            <img src="/img/hero.jpg" alt="Hero" width="100%">
+        </div>
+        <div class="content">
+            <h2>Our meal packages</h2>
+            <h3>You could be chowing down on any of these meals any time you choose - seriously!<br>
+                Order some (or all) of these meals and see why thousands of Canadians stock us in their fridge!</h3>
+
+            {{#if found}}
+            <div class="grid-container_meals">
+                {{#each data}}
+                <div class="meals">
+                    <img src="/img/{{this.img}}"> <br><br>
+                    <span id="title"><b>Title :</b> {{this.title}}<br></span>
+                    <span id="category"><b>Category :</b> {{this.cat}}<br></span>
+                    <span id="description"><b>{{this.desc}}</b><br></span>
+                    <span id="nmeals"><b>Number of meals inside:</b> {{this.nmeals}}<br></span>
+                    <span id="price"><b>Price : {{this.price}}</b><br></span>
+                    <span><button type="button" onclick='addToCart("{{title}}");'>Add to Cart</button></span>
+                </div>
+                {{/each}}
+            </div>
+            {{else}}
+            <h3>There are currently no meals.</h3>
+            {{/if}}
+        </div>
+        <div class="content">
+            <button onclick="location.href='/Dashboard/Customer'" type="button">Go back to the dashboard</button>
+            <button onclick="location.href='/Dashboard/Cart'" type="button">Place an order</button>
+
+        </div>
+    </main>
+    <footer>
+        <p>
+            | Made by Baimukhambetova Gulnur |<br>Follow us on <a
+                href="https://www.instagram.com/livefitfoods/">Instagram</a> & <a
+                href="https://www.facebook.com/livefitfood">Facebook</a>
+        </p>
+    </footer>
+</body>
+
+</html>

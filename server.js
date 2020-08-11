@@ -1,11 +1,17 @@
 /* 
-github: https://github.com/gulyapulya/Assignment_WEB322
-heroku: https://web322-assignment-gulnur.herokuapp.com
+Links:
+  github: https://github.com/gulyapulya/Assignment_WEB322
+  heroku: https://web322-assignment-gulnur.herokuapp.com
 
-All the images were found either in google or in the sample website provided in the instructions
+Resources:
+  All the images were found either in google or in the sample website provided in the instructions
+  hero img: https://www.freepik.com/free-photo/colorful-healthy-unhealthy-food-white-textured-background_2955602.htm
+  others: Sample Website https://livefitfood.ca
 
-Hero img: https://www.freepik.com/free-photo/colorful-healthy-unhealthy-food-white-textured-background_2955602.htm
-Others: Sample Website https://livefitfood.ca
+Clerk Credentials:
+  email: gulnurb2703@gmail.com
+  password: password
+
 */
 
 require('dotenv').config({path:"./config/keys.env"});
@@ -22,7 +28,8 @@ app.set('view engine', 'handlebars');
 
 app.use(express.static("public"));
 
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
 app.use(clientSessions({
     cookieName: "session",

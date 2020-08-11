@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router();
 const db = require("../models/db.js");
+const cart = require("../models/cart.js");
 const multer = require("multer");
 const path = require("path");
 
@@ -45,6 +46,44 @@ router.get("/Customer", ensureLogin, (req, res) => {
     });
 });
 
+router.get("/Packages", ensureLogin, function(req, res) {
+    db.getMeals(false).then((data)=>{
+        res.render("dashboard/packages", {
+            title: "Customer Packages Page",
+            data: data,
+            found: true,
+            user: req.session.user,
+            layout: false
+        });
+    }).catch((err)=>{
+        if(err == "No meals found") 
+            res.render("dashboard/packages", {
+                title: "Customer Packages Page",
+                data: [],
+                found: false,
+                user: req.session.user,
+                layout: false
+            });
+        else
+            console.log(err);
+    });
+});
+
+router.post("/addProduct", (req, res) => {
+    console.log("Adding prod with name: " + req.body.name);
+    db.getMealsByTitle(req.body.name)
+        .then((item) => {
+            cart.addItem(item)
+                .then((numItems) => {
+                    res.json({ data: numItems });
+                }).catch(() => {
+                    res.json({ message: "Error while adding." });
+                })
+        }).catch(() => {
+            res.json({ message: "No Items found with such title." })
+        })
+});
+
 router.get("/Clerk", ensureClerk, (req, res) => {
     res.render("dashboard/clerk", {
         title: "Clerk Dashboard Page",
@@ -52,7 +91,7 @@ router.get("/Clerk", ensureClerk, (req, res) => {
     });
 });
 
-router.get("/View", function(req, res) {
+router.get("/View", ensureClerk, function(req, res) {
     db.getMeals(false).then((data)=>{
         res.render("dashboard/view", {
             title: "Clerk Dashboard Page",
@@ -73,7 +112,7 @@ router.get("/View", function(req, res) {
     });
 });
 
-router.get("/Add", function(req, res) {
+router.get("/Add", ensureClerk, function(req, res) {
     res.render("dashboard/add", {
         title: "Meal Add Page",
         succAdded: false,
@@ -127,7 +166,7 @@ router.post("/Add",upload.single("photo"),(req,res)=>{
     });
 });
 
-router.get("/Edit", function(req, res) {
+router.get("/Edit", ensureClerk, function(req, res) {
     res.render("dashboard/edit", {
         title: "Meal Edit Page",
         user: req.session.user

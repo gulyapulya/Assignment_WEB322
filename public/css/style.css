@@ -140,12 +140,20 @@ nav li a {
     display: block;
     color: white;
     text-align: center;
-    padding: 10px 12px;
+    padding: 10px 20px;
     text-decoration: none;
 }
 
 nav li a:hover {
     background-color: rgb(160, 18, 54);
+}
+
+nav li.right{
+    float: right;
+}
+
+nav li.right a {
+    padding: 10px 50px;
 }
 
 header {
@@ -174,10 +182,15 @@ input[type=checkbox]{
 button {
     background-color: rgb(212, 49, 91);
     color: white;
-    padding: 14px 20px;
+    padding: 15px 20px;
     border: none;
     cursor: pointer;
     width: 20%;
+    margin: 15px;
+}
+
+span button {
+    width: 60%;
 }
   
 button:hover {
